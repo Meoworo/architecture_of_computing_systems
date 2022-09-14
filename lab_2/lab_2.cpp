@@ -13,6 +13,7 @@ int main() {
 	cout << "number of processors available : " << omp_get_num_procs() << endl;
 	cout << "number of threads : " << omp_get_max_threads() << endl;
 
+
 	cout << "\n-- task 1 --\n\n";	//1
 	std::cout << "enter num a: ";
 	float a, b;
@@ -35,6 +36,7 @@ int main() {
 	t = omp_get_wtime() - t;
 	std::cout << "time (parallel): " << t << std::endl;
 
+
 	cout << "\n-- task 2 --\n\n";	//2
 	t = omp_get_wtime();
 #pragma omp parallel
@@ -43,6 +45,7 @@ int main() {
 	}
 	t = omp_get_wtime() - t;
 	cout << "time: " << t << std::endl;
+
 
 	cout << "\n-- task 3 --\n\n";	//3
 	omp_set_num_threads(3);
@@ -63,6 +66,8 @@ int main() {
 		{ cout << "one thread (" << omp_get_thread_num() << ")\n"; }
 		cout << "finish (" << omp_get_thread_num() << ")\n";
 	}
+
+
 	cout << "\n-- task 4 --\n\n";	//4
 	cout << "number of threads : " << omp_get_max_threads() << endl;
 #pragma omp parallel
@@ -81,19 +86,65 @@ int main() {
 		}
 		cout << "(" << omp_get_thread_num() << ") end\n";
 	}
+
+
 	cout << "\n-- task 5 --\n\n";	//5
-	cout << "number of threads : " << omp_get_max_threads() << endl;
 	omp_set_num_threads(2);
 	cout << "number of threads : " << omp_get_max_threads() << endl;
 	int n = 10;
 	cout << "n = " << n << endl;
 #pragma omp parallel private(n)
 	{
-		cout << ("test");
-
+		int n = 10;
+		cout << "(" << omp_get_thread_num() << ") parallel region n = " << n << endl;
+		n = omp_get_thread_num();
+		cout << "(" << omp_get_thread_num() << ") parallel region n = " << n << endl;
 	}
+	cout << "n = " << n << endl;
 
 
+	cout << "\n-- task 6 --\n\n";	//6
+	cout << "number of threads : " << omp_get_max_threads() << endl;
+	int m[5] = { 0 };
+	for (int i = 0; i < 5; i++)
+		cout << m[i] << " ";
+	cout << endl;
+#pragma omp parallel shared(m)
+	{
+		for (int i = 0; i < 5; i++)
+			if (i == omp_get_thread_num())
+				m[i] = 1;
+	}
+	for (int i = 0; i < 5; i++)
+		cout << m[i] << " ";
+	cout << endl;
+
+
+	cout << "\n-- task 7 --\n\n";	//7
+	int thr_num = 8;
+	int sum = 0;
+	omp_set_num_threads(thr_num);
+	cout << "number of threads : " << omp_get_max_threads() << endl;
+	cout << "sum = " << sum << endl;
+#pragma omp parallel reduction(+:sum)
+	{
+		sum++;
+		cout << "(" << omp_get_thread_num() << ") parallel region sum = " << sum << endl;
+	}
+	cout << "sum = " << sum << endl;
+
+
+	cout << "\n-- task 8 --\n\n";	//8
+	omp_set_num_threads(4);
+	cout << "number of threads : " << omp_get_max_threads() << endl;
+	sum = 0;
+	cout << "sum = " << sum << endl;
+#pragma omp parallel reduction(+:sum)
+	{
+		sum = omp_get_thread_num();
+		cout << "(" << omp_get_thread_num() << ") parallel region sum = " << sum << endl;
+	}
+	cout << "sum = " << sum << endl;
 #endif
 	system("pause");
 	return 0;

@@ -12,6 +12,7 @@ int main() {
 	std::cout << "number of processors available : " << omp_get_num_procs() << std::endl;
 	std::cout << "number of threads : " << omp_get_max_threads() << std::endl;
 
+
 	std::cout << "\n--task 3--\n\n";	//3
 #pragma omp parallel
 	{
@@ -27,6 +28,7 @@ int main() {
 		std::cout << "\t\tsequential region 3\n";
 	}
 
+
 	std::cout << "\n--task 1 --\n\n";	//1
 	std::cout << "number of threads : " << omp_get_max_threads() << std::endl;
 	omp_set_num_threads(5);
@@ -40,12 +42,14 @@ int main() {
 	}
 	std::cout << "sequential area 2" << std::endl;
 
+
 	std::cout << "\n--task 2--\n\n";	//2
 	std::cout << "number of threads : " << omp_get_max_threads() << std::endl;
 #pragma omp parallel
 	{
 		std::cout << "my number: " << omp_get_thread_num() << std::endl;
 	}
+
 
 	std::cout << "\n--task 4--\n\n";	//4
 	std::cout << "number of threads : " << omp_get_max_threads() << std::endl;
@@ -64,6 +68,7 @@ int main() {
 	{
 		std::cout << "my number: " << omp_get_thread_num() << std::endl;
 	}
+
 
 	std::cout << "\n--task 5--\n\n";	//5
 	std::cout << "enter argument: ";
@@ -89,7 +94,6 @@ int main() {
 	std::cout << "number of threads : " << omp_get_max_threads() << std::endl << std::endl;
 	int len = 10000000;
 	auto t = omp_get_wtime();;
-
 	if (!flag) {
 		for (int i = 0; i < len; i++)
 			auto a = sin(i);
@@ -106,7 +110,6 @@ int main() {
 		t = omp_get_wtime() - t;
 		std::cout << "time: " << t << std::endl;
 	}
-
 #endif
 	system("pause");
 	return 0;
